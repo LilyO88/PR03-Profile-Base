@@ -11,6 +11,8 @@
     Use android:textColor="@color/color_state_selector" in TextViews acting as labels.
     -->
 
+    <!-- PODRÍAS HABER USADO SIMPLEMENTE MARGEN EN VEZ DE DEFINIR LAS GUIDELINES ¿? -->
+
     <ImageView
         android:id="@+id/imgAvatar"
         android:layout_width="0dp"
@@ -24,6 +26,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- NO USES LITERALES DE TAMAÑO. DEFINE RECURSOS DE DIMENSIÓN -->
     <TextView
         android:id="@+id/lblAvatar"
         android:layout_width="wrap_content"

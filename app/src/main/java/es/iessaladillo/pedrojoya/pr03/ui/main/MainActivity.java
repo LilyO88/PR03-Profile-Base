@@ -23,6 +23,8 @@ import es.iessaladillo.pedrojoya.pr03.utils.ValidationUtils;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
+    // TU CÓDIGO ME HA GUSTADO MUCHO Y HAS MEJORADO MUCHÍSIMO LA LEGIBILIDAD DE TU CÓDIGO RESPECTO
+    // A LA PRÁCTICA ANTERIOR. FELICIDADES. SIGUE ASÍ.
     private ImageView imgAvatar;
     private TextView lblAvatar;
     private final Database database = Database.getInstance();
@@ -42,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ImageView imgAddress;
     private ConstraintLayout constraitLayout;
 
+    // QUITA LOS COMENTARIOS TODO CUANDO LOS HAGAS
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * Checks if form is valid or not and shows a Snackbar accordingly
      **/
     private void save() {
-        // TODO
+        // TE HA FALTADO CERRAR EL TECLADO VIRTUAL.
         if (!validateAll()) {
             Snackbar.make(constraitLayout, R.string.main_error_saving, Snackbar.LENGTH_LONG).show();
         } else {
@@ -102,6 +105,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         imgAddress = ActivityCompat.requireViewById(this, R.id.imgAddress);
         constraitLayout = ActivityCompat.requireViewById(this, R.id.main_constraint);
 
+        // UTILIZA MEJOR UN LAMBDA. HACE QUE EL CÓDIGO SEA MÁS LEGIBLE.
         imgAvatar.setOnClickListener(this);
         lblAvatar.setOnClickListener(this);
         txtName.setOnFocusChangeListener((v, hasFocus) -> setBold(txtName, lblName));
@@ -117,6 +121,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         imgAvatar.setTag(database.getDefaultAvatar().getImageResId());
         lblAvatar.setTag(database.getDefaultAvatar().getName());
 
+        // PODRÍAS USAR UN ÚNICO GestorTextWatcher ¿?
         txtName.addTextChangedListener(new GestorTextWatcher());
         txtEmail.addTextChangedListener(new GestorTextWatcher());
         txtPhonenumber.addTextChangedListener(new GestorTextWatcher());
@@ -129,6 +134,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
 
+    // YO LE PASARÍA UN BOOLEANO INDICATIVO DE SI TIENE EL FOCO, EN VEZ DE CONSULTARLO DENTRO
     private void setBold(EditText editText, TextView label) {
         if(editText.hasFocus()) {
             label.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
@@ -146,13 +152,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void changeImageAvatar() {
         Avatar avatarRandom = database.getRandomAvatar();
+        // MEJOR CREA UN MÉTODO CON ESTAS CUATRO LÍNEAS showAvatar(avatarRandom)
         imgAvatar.setImageResource(avatarRandom.getImageResId());
         lblAvatar.setText(avatarRandom.getName());
-
         imgAvatar.setTag(avatarRandom.getImageResId());
         lblAvatar.setTag(avatarRandom.getName());
     }
 
+    // ME GUSTA MUCHO QUE PROPONGAS ESTA SOLUCIÓN PARA HACER EL CÓDIGO MÁS LEGIBLE.
+    // IN ENGLISH PLEASE
     private class GestorTextWatcher implements TextWatcher {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -170,6 +178,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void checkName() {
+        // SIEMPRE QUE DEBAS COMPROBAR SI UNA CADENA ESTÁ VACÍA O SI DOS CADENAS SON IGUALES
+        // USA LA CLASE DE UTILIDAD TextUtils Y SUS MÉTODOS .isEmpty() y .equals() PORQUE DE ESA
+        // MANERA TE AHORRAS COMPROBAR QUE LA CADENA O CADENAS NO SON NULAS.
+        // PODRÍAS HABER CREADO UN MÉTODO isValidName(cadena). DE ESTA MANERA SI EN EL FUTURO
+        // HAY MÁS CODICIONES DE VALIDACIÓN PARA EL NOMBRE SÓLO DEBERÍA MODIFICAR DICHO MÉTODO.
+        // LO MISMO EN EL RESTO DE MÉTODOS check...
         if(txtName.getText().toString().isEmpty()) {
             txtName.setError(getString(R.string.main_invalid_data));
             lblName.setEnabled(false);
@@ -231,6 +245,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void checkCurrentView() {
+        // getCurrentFocus() PUEDE RETORNAR NULL TEÓRICAMENTE, ASÍ QUE PROTÉGE EL ACCESO
+        // CON UNA COMPROBACIÓN DE SI getCurrenFocus() != null
         if(getCurrentFocus().getId() == txtName.getId()) {
             checkName();
         } else if (getCurrentFocus().getId() == txtEmail.getId()) {
@@ -254,6 +270,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private boolean validateAll() {
         checkAll();
+        // AUNQUE ESTO SE FUNCIONA, TIENE UN LEVE PROBLEMA. TE SUPEDITANDO LA VALIDEZ DEL FORMULARIO
+        // AL HECHO DE QUE LOS TextView SON DESHABILITADOS SI EL EditText CORRESPONDIENTE NO ES
+        // VÁLIDO. ¿PERO QUÉ PASARÍA SI DICHA FUNCIONALIDAD ES ELIMINDADA EN EL FUTURO? BAJO MI
+        // PUNTO DE VISTA LA FUNCIÓN DE VALIDACIÓN SÓLO DEBE TRABAJAR CON LOS DATOS DE LOS EditText.
         View[] array = new View[]{lblName, lblEmail, lblPhonenumber, lblAddress, lblWeb};
         for (View view: array) {
             if(!view.isEnabled()) {
